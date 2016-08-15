@@ -66,3 +66,24 @@ WHERE
   books.title = 'White Fang'
 AND
   genres.name = 'Fantasy';
+
+--fixture data
+
+INSERT INTO
+  authors (name, description)
+VALUES
+  ('Adam Smith', 'BLAH BLAH'),
+  ('Jack London', 'BLAH BLAH');
+
+INSERT INTO
+  books_authors
+SELECT
+  books.id, authors.id
+FROM
+  books
+CROSS JOIN
+  authors
+WHERE
+  books.title = 'White Fang'
+AND
+  authors.name = 'Jack London';
