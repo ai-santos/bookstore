@@ -24,28 +24,24 @@ CREATE TABLE genres (
   description VARCHAR(255) NOT NULL
 );
 
-DROP TABLE IF EXISTS books_authors;
+DROP TABLE IF EXISTS author_books;
 
-CREATE TABLE books_authors (
-  books_id INTEGER NOT NULL,
-  authors_id INTEGER NOT NULL
+CREATE TABLE author_books (
+  book_id INTEGER NOT NULL,
+  author_id INTEGER NOT NULL
 );
 
-DROP TABLE IF EXISTS books_genres;
+DROP TABLE IF EXISTS book_genres;
 
-CREATE TABLE books_genres (
-  books_id INTEGER NOT NULL,
-  genres_id INTEGER NOT NULL
+CREATE TABLE book_genres (
+  book_id INTEGER NOT NULL,
+  genre_id INTEGER NOT NULL
 );
+
+
+
 
 --fixture data
-
-INSERT INTO
-  books (title, description, published_at, fiction)
-VALUES
-  ('Wealth of Nations', 'BLAH BLAH', now(), false),
-  ('White Fang', 'BLAH BLAH', now(), true);
-
 INSERT INTO
   genres (name, description)
 VALUES
@@ -55,7 +51,109 @@ VALUES
   ('Sci-Fi', 'BLAH BLAH');
 
 INSERT INTO
-  books_genres
+  books (title, description, published_at, fiction)
+VALUES
+  ('Wealth of Nations', '', now(), false),
+  ('White Fang', '', now(), true),
+  ('Snow Crash', '', now(), true),
+  ('Cryptonomicon', '', now(), true),
+  ('Anathem', '', now(), true);
+
+INSERT INTO
+  authors (name, description)
+VALUES
+  ('Adam Smith', ''),
+  ('Neal Stephenson', ''),
+  ('Jack London', '');
+
+
+INSERT INTO
+  author_books
+SELECT
+  books.id, authors.id
+FROM
+  books
+CROSS JOIN
+  authors
+WHERE
+  books.title = 'Wealth of Nations'
+AND
+  authors.name = 'Adam Smith';
+
+
+INSERT INTO
+  author_books
+SELECT
+  books.id, authors.id
+FROM
+  books
+CROSS JOIN
+  authors
+WHERE
+  books.title = 'White Fang'
+AND
+  authors.name = 'Jack London';
+
+
+INSERT INTO
+  author_books
+SELECT
+  books.id, authors.id
+FROM
+  books
+CROSS JOIN
+  authors
+WHERE
+  books.title = 'Snow Crash'
+AND
+  authors.name = 'Neal Stephenson';
+
+
+INSERT INTO
+  author_books
+SELECT
+  books.id, authors.id
+FROM
+  books
+CROSS JOIN
+  authors
+WHERE
+  books.title = 'Cryptonomicon'
+AND
+  authors.name = 'Neal Stephenson';
+
+
+INSERT INTO
+  author_books
+SELECT
+  books.id, authors.id
+FROM
+  books
+CROSS JOIN
+  authors
+WHERE
+  books.title = 'Anathem'
+AND
+  authors.name = 'Neal Stephenson';
+
+
+
+INSERT INTO
+  book_genres
+SELECT
+  books.id, genres.id
+FROM
+  books
+CROSS JOIN
+  genres
+WHERE
+  books.title = 'Wealth of Nations'
+AND
+  genres.name = 'Economics';
+
+
+INSERT INTO
+  book_genres
 SELECT
   books.id, genres.id
 FROM
@@ -67,23 +165,145 @@ WHERE
 AND
   genres.name = 'Fantasy';
 
---fixture data
+
 
 INSERT INTO
-  authors (name, description)
-VALUES
-  ('Adam Smith', 'BLAH BLAH'),
-  ('Jack London', 'BLAH BLAH');
-
-INSERT INTO
-  books_authors
+  book_genres
 SELECT
-  books.id, authors.id
+  books.id, genres.id
 FROM
   books
 CROSS JOIN
-  authors
+  genres
 WHERE
-  books.title = 'White Fang'
+  books.title = 'Snow Crash'
 AND
-  authors.name = 'Jack London';
+  genres.name = 'Sci-Fi';
+
+
+
+INSERT INTO
+  book_genres
+SELECT
+  books.id, genres.id
+FROM
+  books
+CROSS JOIN
+  genres
+WHERE
+  books.title = 'Cryptonomicon'
+AND
+  genres.name = 'Horror';
+
+
+INSERT INTO
+  book_genres
+SELECT
+  books.id, genres.id
+FROM
+  books
+CROSS JOIN
+  genres
+WHERE
+  books.title = 'Cryptonomicon'
+AND
+  genres.name = 'Sci-Fi';
+
+
+
+INSERT INTO
+  book_genres
+SELECT
+  books.id, genres.id
+FROM
+  books
+CROSS JOIN
+  genres
+WHERE
+  books.title = 'Anathem'
+AND
+  genres.name = 'Fantasy';
+
+
+
+
+
+
+
+
+
+
+-- QUERIES
+
+-- give me all the books for a specific author
+SELECT
+  *
+FROM
+  books
+JOIN
+  author_books
+ON
+  books.id = author_books.book_id
+JOIN
+  authors
+ON
+  authors.id = author_books.author_id
+WHERE
+  authors.name = 'Adam Smith'
+;
+
+-- give me all the books with a title like X
+
+SELECT
+  *
+FROM
+  books
+WHERE
+  title LIKE '%ite%';
+
+
+
+
+-- give me all the books for a specific genre
+SELECT
+  books.*
+FROM
+  books
+JOIN
+  book_genres
+ON
+  books.id = book_genres.book_id
+JOIN
+  genres
+ON
+  genres.id = book_genres.genre_id
+WHERE
+  genres.name IN ('Economics', 'Horror')
+;
+
+-- give me all the books for a specific genre
+SELECT
+  books.*
+FROM
+  books
+JOIN
+  book_genres
+ON
+  books.id = book_genres.book_id
+JOIN
+  genres
+ON
+  genres.id = book_genres.genre_id
+JOIN
+  author_books
+ON
+  books.id = author_books.book_id
+JOIN
+  authors
+ON
+  authors.id = author_books.author_id
+WHERE
+  genres.name IN ('Economics', 'Sci-Fi')
+AND
+  authors.name LIKE '%Adam%'
+;
