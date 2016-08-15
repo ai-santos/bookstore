@@ -18,5 +18,8 @@
     "babel-cli": "^6.11.4",
     "babel-core": "^6.13.2",
     "babel-watch": "^2.0.2"
+  },
+  "engines": {
+    "node": "6.3.0"
   }
 }
