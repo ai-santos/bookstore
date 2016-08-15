@@ -5,7 +5,6 @@ CREATE TABLE books (
   title VARCHAR(255) NOT NULL,
   description VARCHAR(255) NOT NULL,
   published_at DATE NOT NULL,
-  image_url VARCHAR(255) NOT NULL,
   fiction BOOLEAN NOT NULL
 );
 
@@ -42,26 +41,28 @@ CREATE TABLE books_genres (
 --fixture data
 
 INSERT INTO
-  books (title, published_at, fiction)
+  books (title, description, published_at, fiction)
 VALUES
-  ('Wealth of Nations', now(), false),
-  ('White Fang', now(), true)
+  ('Wealth of Nations', 'BLAH BLAH', now(), false),
+  ('White Fang', 'BLAH BLAH', now(), true);
 
 INSERT INTO
-  genres (name)
+  genres (name, description)
 VALUES
-  ('Economics'),
-  ('Fastasy'),
-  ('Horror'),
-  ('Sci-fi')
+  ('Economics', 'BLAH BLAH'),
+  ('Fantasy', 'BLAH BLAH'),
+  ('Horror', 'BLAH BLAH'),
+  ('Sci-Fi', 'BLAH BLAH');
 
 INSERT INTO
+  books_genres
+SELECT
   books.id, genres.id
 FROM
   books
 CROSS JOIN
   genres
 WHERE
-  books.title = 'Wealth of Nations'
+  books.title = 'White Fang'
 AND
-  genres.name = 'Fantasy'
+  genres.name = 'Fantasy';
