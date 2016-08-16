@@ -1,0 +1,7 @@
+extends ../layout
+
+block content
+  for author in authors
+    h1= author.name
+    pre= author.description
+

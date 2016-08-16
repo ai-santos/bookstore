@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  h1 All Authors
+
+  table
+    thead
+      tr
+        th Name
+        th Description
+    tbody
+      for author in authors
+        td
+          span= author.name
+        td
+          span= author.description
