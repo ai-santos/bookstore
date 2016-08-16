@@ -9,14 +9,29 @@ const getAllBooks = function(){
   return db.any("select * from books");
 }
 
-const getBooksById = function(id) {
-  return db.one('select books.* from books where id=$1', [id]);
+const getBookById = function(bookId) {
+  return db.one('select books.* from books where id=$1', [bookId]);
 }
 
-const getGenresByBookId = function(bookId){
+const getBookWithGenresAndAuthorsById = function(bookId){
+  return Promise.all([
+    getBookById(bookId),
+    getGenresByBookIds([bookId]),
+    getAuthorsByBookIds([bookId]),
+  ]).then(function(data){
+    const book = data[0]
+    book.genres = data[1]
+    book.authors = data[2]
+    return book;
+  })
+}
+
+
+const getGenresByBookIds = function(bookId){
   const sql = `
     SELECT
-      genres.*
+      genres.*,
+      book_genres.book_id
     FROM
       genres
     JOIN
@@ -24,15 +39,16 @@ const getGenresByBookId = function(bookId){
     ON
       genres.id = book_genres.genre_id
     WHERE
-      book_genres.book_id=$1
+      book_genres.book_id IN ($1:csv)
   `;
   return db.many(sql, [bookId]);
 }
 
-const getAuthorsByBookId = function(bookId){
+const getAuthorsByBookIds = function(bookId){
   const sql = `
     SELECT
-      authors.*
+      authors.*,
+      author_books.book_id
     FROM
       authors
     JOIN
@@ -40,34 +56,29 @@ const getAuthorsByBookId = function(bookId){
     ON
       authors.id = author_books.author_id
     WHERE
-      author_books.book_id=$1
+      author_books.book_id IN ($1:csv)
   `;
   return db.many(sql, [bookId]);
 }
+
+
 
 const getAllBooksWithAuthorsAndGenres = function(){
   return getAllBooks().then(function(books){
     const bookIds = books.map(book => book.id)
 
-    const sql = `
-      SELECT
-        authors.*,
-        author_books.book_id
-      FROM
-        authors
-      JOIN
-        author_books
-      ON
-        authors.id=author_books.author_id
-      WHERE
-        author_books.book_id IN ($1:csv)
-    `;
-
-    return db.any(sql, [bookIds])
-      .then(function(authors){
-        books.forEach(book => book.authors = authors.filter(author => author.book_id === book.id))
-        return books
+    return Promise.all([
+      getGenresByBookIds(bookIds),
+      getAuthorsByBookIds(bookIds),
+    ]).then(function(data){
+      const genres = data[0]
+      const authors = data[1]
+      books.forEach(function(book){
+        book.authors = authors.filter(author => author.book_id === book.id)
+        book.genres = genres.filter(genre => genre.book_id === book.id)
       })
+      return books
+    })
   })
 }
 
@@ -83,14 +94,51 @@ const getAllGenres = function(){
   return db.any('select * from genres');
 }
 
+const getBooksByGenreId = function(genre_id){
+  const sql = `
+    SELECT
+      books.*
+    FROM
+      books
+    JOIN
+      book_genres
+    ON
+      books.id = book_genres.book_id
+    WHERE
+      book_genres.genre_id=$1
+  `;
+  console.log(sql)
+  return db.any(sql, [genre_id]);
+}
+
+const getBooksByAuthorId = function(author_id) {
+  const sql = `
+    SELECT
+      books.*
+    FROM
+      books
+    JOIN
+      author_books
+    ON
+      books.id = author_books.book_id
+    WHERE
+      author_books.author_id=$1
+  `;
+  console.log(sql)
+  return db.any(sql, [author_id]);
+}
+
 module.exports = {
   pgp: pgp,
   db: db,
   getAllBooks: getAllBooks,
+  getBooksByGenreId: getBooksByGenreId,
+  getBooksByAuthorId: getBooksByAuthorId,
+  getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
   getAllBooksWithAuthorsAndGenres: getAllBooksWithAuthorsAndGenres,
-  getBooksById: getBooksById,
-  getGenresByBookId: getGenresByBookId,
-  getAuthorsByBookId: getAuthorsByBookId,
+  getBookById: getBookById,
+  getGenresByBookIds: getGenresByBookIds,
+  getAuthorsByBookIds: getAuthorsByBookIds,
   getAllAuthors: getAllAuthors,
   getAuthorsById: getAuthorsById,
   getAllGenres: getAllGenres,
