@@ -36,6 +36,31 @@ app.get('/books', function(req, res, next){
     })
 });
 
+app.get('/books/:book_id', function(req, res, next){
+  const { book_id } = req.params;
+
+  database.getBooksById(book_id)
+    .then(function(book){
+      res.render('books/show', {
+        book: book,
+      })
+    })
+    .catch(function(error){
+      throw error;
+    })
+});
+
+app.get('/test', function(req, res, next){
+  database.getAuthorsByBookId(1)
+    .then(function(book){
+      res.json(book)
+    })
+    .catch(function(error){
+      res.json({ERROR: error})
+    })
+});
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
