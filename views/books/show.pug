@@ -3,4 +3,16 @@ extends ../layout
 block content
   h1= book.title
   pre= book.description
-  
+
+  h3 Authors
+  ul
+    for author in book.authors
+      li
+        a(href="/authors/"+author.id)= author.name
+
+
+  h3 Genres
+  ul
+    for genre in book.genres
+      li
+        a(href="/genres/"+genre.id)= genre.name

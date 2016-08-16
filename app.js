@@ -41,7 +41,7 @@ app.get('/books', function(req, res, next){
 app.get('/books/:book_id', function(req, res, next){
   const { book_id } = req.params;
 
-  database.getBooksById(book_id)
+  database.getBookWithGenresAndAuthorsById(book_id)
     .then(function(book){
       res.render('books/show', {
         book: book,
@@ -52,16 +52,6 @@ app.get('/books/:book_id', function(req, res, next){
     })
 });
 
-//test routes
-app.get('/test', function(req, res, next){
-  database.getAllGenres()
-    .then(function(data){
-      res.json(data)
-    })
-    .catch(function(error){
-      res.json({ERROR: error})
-    })
-});
 
 //get all authors
 app.get('/authors', function(req, res, next){
@@ -78,11 +68,12 @@ app.get('/authors', function(req, res, next){
 
 
 //get authors by bookId
-app.get('/authors/:book_id', function(req, res){
-  const { book_id } = req.params;
+app.get('/authors/:authorId', function(req, res){
+  const { authorId } = req.params;
 
-  database.getAuthorsByBookId(book_id)
+  database.getBooksByAuthorId(authorId)
     .then(function(authors){
+      // res.json(authors);
       res.render('authors/show', {
         authors: authors,
       })
@@ -92,6 +83,49 @@ app.get('/authors/:book_id', function(req, res){
     })
 })
 
+
+//get all genres
+app.get('/genres', function(req, res, next){
+  database.getAllGenres()
+    .then(function(genres){
+      res.render('genres/index', {
+        genres: genres,
+      })
+    })
+    .catch(function(error){
+      throw error;
+    })
+});
+
+//get genre by genre id
+app.get('/genres/:genre_id', function(req, res){
+  const{ genre_id } = req.params;
+
+  database.getBooksByGenreId(genre_id)
+    .catch(function(error){
+      console.error(error);
+      res.render('error',{
+        error: error
+      })
+    })
+    .then(function(books){
+      console.log('books', books);
+      res.render('genres/show', {
+        books: books,
+      })
+    })
+})
+
+//test routes
+app.get('/test', function(req, res, next){
+  database.getAllGenres()
+    .then(function(data){
+      res.json(data)
+    })
+    .catch(function(error){
+      res.json({ERROR: error})
+    })
+});
 
 
 // catch 404 and forward to error handler
