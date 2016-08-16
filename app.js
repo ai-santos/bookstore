@@ -71,11 +71,18 @@ app.get('/authors', function(req, res, next){
 app.get('/authors/:authorId', function(req, res){
   const { authorId } = req.params;
 
-  database.getBooksByAuthorId(authorId)
-    .then(function(authors){
+  Promise.all([
+    database.getAuthorById(authorId),
+    database.getBooksByAuthorId(authorId)
+  ])
+    .then(function(data){
+      const author = data[0]
+      const books = data[1]
+      console.log('books', books)
       // res.json(authors);
       res.render('authors/show', {
-        authors: authors,
+        books: books,
+        author: author
       })
     })
     .catch(function(error){

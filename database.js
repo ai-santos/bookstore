@@ -86,7 +86,7 @@ const getAllAuthors = function(){
   return db.any('select * from authors');
 }
 
-const getAuthorsById = function(id){
+const getAuthorById = function(id){
   return db.one('select authors.* from authors where id=$1', [id]);
 }
 
@@ -140,6 +140,6 @@ module.exports = {
   getGenresByBookIds: getGenresByBookIds,
   getAuthorsByBookIds: getAuthorsByBookIds,
   getAllAuthors: getAllAuthors,
-  getAuthorsById: getAuthorsById,
+  getAuthorById: getAuthorById,
   getAllGenres: getAllGenres,
 };
