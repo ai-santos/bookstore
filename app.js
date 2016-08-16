@@ -51,9 +51,9 @@ app.get('/books/:book_id', function(req, res, next){
 });
 
 app.get('/test', function(req, res, next){
-  database.getAuthorsByBookId(1)
-    .then(function(book){
-      res.json(book)
+  database.getAllGenres()
+    .then(function(data){
+      res.json(data)
     })
     .catch(function(error){
       res.json({ERROR: error})

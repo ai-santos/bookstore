@@ -68,10 +68,19 @@ const getAllBooksWithAuthorsAndGenres = function(){
         books.forEach(book => book.authors = authors.filter(author => author.book_id === book.id))
         return books
       })
-      .catch(function(error){
-        throw error;
-      })
   })
+}
+
+const getAllAuthor = function(){
+  return db.any('select * from authors');
+}
+
+const getAuthorsById = function(id){
+  return db.one('select authors.* from authors where id=$1', [id]);
+}
+
+const getAllGenres = function(){
+  return db.any('select * from genres');
 }
 
 module.exports = {
@@ -81,5 +90,8 @@ module.exports = {
   getAllBooksWithAuthorsAndGenres: getAllBooksWithAuthorsAndGenres,
   getBooksById: getBooksById,
   getGenresByBookId: getGenresByBookId,
-  getAuthorsByBookId: getAuthorsByBookId
+  getAuthorsByBookId: getAuthorsByBookId,
+  getAllAuthor: getAllAuthor,
+  getAuthorsById: getAuthorsById,
+  getAllGenres: getAllGenres,
 };
