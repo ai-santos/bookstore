@@ -71,7 +71,7 @@ const getAllBooksWithAuthorsAndGenres = function(){
   })
 }
 
-const getAllAuthor = function(){
+const getAllAuthors = function(){
   return db.any('select * from authors');
 }
 
@@ -91,7 +91,7 @@ module.exports = {
   getBooksById: getBooksById,
   getGenresByBookId: getGenresByBookId,
   getAuthorsByBookId: getAuthorsByBookId,
-  getAllAuthor: getAllAuthor,
+  getAllAuthors: getAllAuthors,
   getAuthorsById: getAuthorsById,
   getAllGenres: getAllGenres,
 };

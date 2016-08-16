@@ -19,11 +19,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// routes
+// index route
 app.get('/', function(req, res, next){
   res.render('index', {})
 });
 
+//get all books
 app.get('/books', function(req, res, next){
   database.getAllBooksWithAuthorsAndGenres()
     .then(function(books){
@@ -36,6 +37,7 @@ app.get('/books', function(req, res, next){
     })
 });
 
+//get books by id
 app.get('/books/:book_id', function(req, res, next){
   const { book_id } = req.params;
 
@@ -50,6 +52,7 @@ app.get('/books/:book_id', function(req, res, next){
     })
 });
 
+//test routes
 app.get('/test', function(req, res, next){
   database.getAllGenres()
     .then(function(data){
@@ -59,6 +62,36 @@ app.get('/test', function(req, res, next){
       res.json({ERROR: error})
     })
 });
+
+//get all authors
+app.get('/authors', function(req, res, next){
+  database.getAllAuthors()
+    .then(function(authors){
+      res.render('authors/index', {
+        authors: authors,
+      })
+    })
+    .catch(function(error){
+      throw error;
+    })
+});
+
+
+//get authors by bookId
+app.get('/authors/:book_id', function(req, res){
+  const { book_id } = req.params;
+
+  database.getAuthorsByBookId(book_id)
+    .then(function(authors){
+      res.render('authors/show', {
+        authors: authors,
+      })
+    })
+    .catch(function(error){
+      throw error;
+    })
+})
+
 
 
 // catch 404 and forward to error handler
