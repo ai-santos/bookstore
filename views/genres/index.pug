@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  h1 All Genres
+
+  table
+    thead
+      tr
+        th Name
+        th Description
+    tbody
+      for genre in genres
+        td
+          span= genre.name
+        td
+          span= genre.description

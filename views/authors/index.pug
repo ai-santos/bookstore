@@ -10,7 +10,8 @@ block content
         th Description
     tbody
       for author in authors
-        td
-          span= author.name
-        td
-          span= author.description
+        tr
+          td
+            a(href="/authors/"+author.id)= author.name
+          td
+            = author.description
