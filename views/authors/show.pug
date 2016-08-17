@@ -1,13 +1,21 @@
 extends ../layout
 
 block content
-
-  h1= author.name
-  ul
+  .row
+    .col-md-2
+      img.media-object(src= author.image_url, alt='...')
+    .col-md-10
+      a(href="/authors/"+author.id)
+        h1= author.name
+      p= author.description
+  .row.book-container
     for book in books
-      img.media-object(src= book.image_url, alt='...')
-      li=book.title
-      li=book.description
+      .col-md-2
+        img.media-object(src= book.image_url, alt='...')
+      .col-md-10
+        a(href="/books/"+book.id)
+          h4= book.title
+        p=book.description
 
 
 
