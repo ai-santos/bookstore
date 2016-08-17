@@ -2,16 +2,9 @@ extends ../layout
 
 block content
   h1 All Authors
-
-  table
-    thead
-      tr
-        th Name
-        th Description
-    tbody
-      for author in authors
-        tr
-          td
-            a(href="/authors/"+author.id)= author.name
-          td
-            = author.description
+  for author in authors
+    .row
+      .col-md-4
+        a(href="/authors/"+author.id)= author.name
+      .col-md-8
+        p= author.description

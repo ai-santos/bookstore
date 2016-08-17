@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS authors;
 
 CREATE TABLE authors (
   id SERIAL PRIMARY KEY,
+  image_url VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
   description VARCHAR(255) NOT NULL
 );
@@ -62,8 +63,8 @@ VALUES
 INSERT INTO
   authors (name, description)
 VALUES
-  ('Adam Smith', ''),
-  ('Neal Stephenson', ''),
+  ('Adam Smith', 'He was an economist and philosopher who wrote what is considered the "bible of capitalism," The Wealth of Nations, in which he details the first system of political economy.'),
+  ('Neal Stephenson', 'He is an American writer and game designer known for his works of speculative fiction. His novels have been variously categorized as science fiction, historical fiction, cyberpunk, and "postcyberpunk". '),
   ('Jack London', '');
 
 

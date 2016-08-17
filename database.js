@@ -179,16 +179,19 @@ module.exports = {
   pgp: pgp,
   db: db,
   getAllBooks: getAllBooks,
-  getBooksByGenreId: getBooksByGenreId,
-  getBooksByAuthorId: getBooksByAuthorId,
-  getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
   getAllBooksWithAuthorsAndGenres: getAllBooksWithAuthorsAndGenres,
-  getBookById: getBookById,
-  getGenresByBookIds: getGenresByBookIds,
-  getAuthorsByBookIds: getAuthorsByBookIds,
   getAllAuthors: getAllAuthors,
-  getAuthorById: getAuthorById,
   getAllGenres: getAllGenres,
+<<<<<<< HEAD
   createAuthor:createAuthor,
   createBook: createBook,
+=======
+  getGenresByBookIds: getGenresByBookIds,
+  getBookById: getBookById,
+  getBooksByGenreId: getBooksByGenreId,
+  getBooksByAuthorId: getBooksByAuthorId,
+  getAuthorById: getAuthorById,
+  getAuthorsByBookIds: getAuthorsByBookIds,
+  getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
+>>>>>>> 4e55e2c8e6420cbc81092d2993b6a538a773f9aa
 };
