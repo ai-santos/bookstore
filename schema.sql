@@ -2,8 +2,9 @@ DROP TABLE IF EXISTS books;
 
 CREATE TABLE books (
   id SERIAL PRIMARY KEY,
+  image_url VARCHAR(255) NOT NULL,
   title VARCHAR(255) NOT NULL,
-  description VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
   published_at DATE NOT NULL,
   fiction BOOLEAN NOT NULL
 );
@@ -52,13 +53,19 @@ VALUES
   ('Sci-Fi', 'BLAH BLAH');
 
 INSERT INTO
-  books (title, description, published_at, fiction)
+  books (image_url, title, description, published_at, fiction)
 VALUES
-  ('Wealth of Nations', '', now(), false),
-  ('White Fang', '', now(), true),
-  ('Snow Crash', '', now(), true),
-  ('Cryptonomicon', '', now(), true),
-  ('Anathem', '', now(), true);
+  ('http://i.imgur.com/oyQPrQKt.gif', 'Wealth of Nations', 'The Wealth of Nations is a clearly written account of economics at the dawn of the Industrial Revolution. The book was a landmark work in the history and economics as it was comprehensive and an accurate characterization of the economic mechanisms at work in modern economics. Smith believed in a Meritocracy. Smith emphasized the advancement that one could take based on their will to better themselves. This is simply one of the most important books ever written on the subject of economics.', now(), false),
+  ('http://i.imgur.com/4oRxld2t.jpg', 'White Fang', 'Two men are out in the wild of the north. Their dogs disappear as they are lured by a she-wolf and eaten by the pack. They only have three bullets left and Bill, one of the men, uses them to try to save one of their dogs; he misses and is eaten with the dog. Only Henry and two dogs are left; he makes a fire, trying to drive away the wolves. They draw in close, and he is almost eaten, saved only by a company of men who were traveling nearby.', now(), true),
+  ('http://i.imgur.com/4rEwlYwt.jpg', 'Snow Crash', 'In reality, Hiro Protagonist delivers pizza for Uncle Enzo’s CosoNostra Pizza Inc., but in the Metaverse he’s a warrior prince. Plunging headlong into the enigma of a new computer virus that’s striking down hackers everywhere, he races along the neon-lit streets on a search-and-destroy mission for the shadowy virtual villain threatening to bring about infocalypse. Snow Crash is a mind-altering romp through a future America so bizarre, so outrageous…you’ll recognize it immediately.', now(), true),
+  ('http://i.imgur.com/APTy0mLt.jpg', 'Cryptonomicon', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui sint, cumque cupiditate corporis ab voluptatum earum magni. Qui ut hic quod nobis placeat cupiditate assumenda itaque enim unde quas. Iste.', now(), true),
+  ('http://i.imgur.com/w2q0wM1t.jpg', 'Anathem', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui sint, cumque cupiditate corporis ab voluptatum earum magni. Qui ut hic quod nobis placeat cupiditate assumenda itaque enim unde quas. Iste.', now(), true);
+
+
+
+
+
+
 
 INSERT INTO
   authors (image_url, name, description)

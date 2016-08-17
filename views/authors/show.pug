@@ -5,7 +5,9 @@ block content
   h1= author.name
   ul
     for book in books
+      img.media-object(src= book.image_url, alt='...')
       li=book.title
+      li=book.description
 
 
 
