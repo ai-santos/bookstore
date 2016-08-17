@@ -2,17 +2,18 @@ extends ../layout
 
 block content
   h1= book.title
-  img.media-object(src= book.image_url, alt='...')
-
-  h3 Authors
-  ul
-    for author in book.authors
-      li
-        a(href="/authors/"+author.id)= author.name
-
-
-  h3 Genres
-  ul
-    for genre in book.genres
-      li
-        a(href="/genres/"+genre.id)= genre.name
+  .col-md-2
+    img.media-object(src= book.image_url, alt='...')
+  .col-md-4
+    h3 Authors
+    ul
+      for author in book.authors
+        li
+          a(href="/authors/"+author.id)= author.name
+    h3 Genres
+    ul
+      for genre in book.genres
+        li
+          a(href="/genres/"+genre.id)= genre.name
+  .col-md-6
+    p= book.description
