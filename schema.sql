@@ -14,7 +14,7 @@ CREATE TABLE authors (
   id SERIAL PRIMARY KEY,
   image_url VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
-  description VARCHAR(255) NOT NULL
+  description TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS genres;
@@ -61,11 +61,11 @@ VALUES
   ('Anathem', '', now(), true);
 
 INSERT INTO
-  authors (name, description)
+  authors (image_url, name, description)
 VALUES
-  ('Adam Smith', 'He was an economist and philosopher who wrote what is considered the "bible of capitalism," The Wealth of Nations, in which he details the first system of political economy.'),
-  ('Neal Stephenson', 'He is an American writer and game designer known for his works of speculative fiction. His novels have been variously categorized as science fiction, historical fiction, cyberpunk, and "postcyberpunk". '),
-  ('Jack London', '');
+  ('http://i.imgur.com/hmkzBBwt.jpg', 'Adam Smith', 'He was an economist and philosopher who wrote what is considered the "bible of capitalism," The Wealth of Nations, in which he details the first system of political economy.'),
+  ('http://i.imgur.com/ktNNx1It.jpg', 'Neal Stephenson', 'He is an American writer and game designer known for his works of speculative fiction. His novels have been variously categorized as science fiction, historical fiction, cyberpunk, and "postcyberpunk".'),
+  ('http://i.imgur.com/iU1AQ8xt.jpg' ,'Jack London', 'Jack London was born John Griffith Chaney on January 12, 1876, in San Francisco, California. After working in the Klondike, London returned home and began publishing stories. His novels, including The Call of the Wild, White Fang and Martin Eden, placed London among the most popular American authors of his time. London, who was also a journalist and an outspoken socialist, died in 1916.');
 
 
 INSERT INTO
