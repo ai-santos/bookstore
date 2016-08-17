@@ -4,8 +4,9 @@ block content
   h1 All Authors
   for author in authors
     .row
-      .col-md-4
+      .col-md-2
         img.media-object(src= author.image_url, alt='...')
-        a(href="/authors/"+author.id)= author.name
-      .col-md-8
+      .col-md-10
+        a(href="/authors/"+author.id)
+          h3= author.name
         p= author.description
