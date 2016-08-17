@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  div
+    table
+      thead All books currently available
+        tr
+          th ID
+          th Title
+      tbody
+        for book in books
+          tr
+            td= book.id
+            td
+              a(href="/books/"+book.id)= book.title

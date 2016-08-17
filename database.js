@@ -69,12 +69,16 @@ const getAllBooksWithAuthorsAndGenres = function(){
       getGenresByBookIds(bookIds),
       getAuthorsByBookIds(bookIds),
     ]).then(function(data){
+      console.log('data', data)
+
       const genres = data[0]
       const authors = data[1]
       books.forEach(function(book){
         book.authors = authors.filter(author => author.book_id === book.id)
         book.genres = genres.filter(genre => genre.book_id === book.id)
       })
+
+      console.log('Books 2nd', books)
       return books
     })
   })
@@ -207,6 +211,74 @@ const createBook = function(attributes){
     })
 }
 
+const searchForBooks = function(options){
+  console.log(options)
+
+  const variables = []
+  let sql = `
+    SELECT
+      DISTINCT(books.*)
+    FROM
+      books
+  `
+  if (options.search_query){
+    let search_query = options.search_query
+      .toLowerCase()
+      .replace(/^ */, '%')
+      .replace(/ *$/, '%')
+      .replace(/ +/g, '%')
+
+    variables.push(search_query)
+    sql += `
+        WHERE
+      LOWER(books.title) LIKE $${variables.length}
+    `
+  }
+  console.log('----->', sql, variables)
+  return db.any(sql, variables)
+}
+
+
+const searchForBook = searchTerm => {
+  const sql = `
+    SELECT
+      DISTINCT(books.*)
+    FROM
+      books
+    JOIN
+      book_author
+    ON
+      authors.id=book_author.author_id
+    JOIN
+      books
+    ON
+      book_author.book_id=books.id
+    WHERE
+      authors.author LIKE '$1%';
+  `
+  return db.any(sql, [searchTerm])
+}
+
+const searchForAuthor = searchTerm => {
+  const sql = `
+    SELECT
+      DISTINCT(authors.*)
+    FROM
+      authors
+    JOIN
+      book_author
+    ON
+      books.id=book_author.book_id
+    JOIN
+      authors
+    ON
+      book_author.author_id=authors.id
+    WHERE
+      authors.author LIKE '$1%';
+  `
+  return db.any(sql, [searchTerm])
+}
+
 module.exports = {
   pgp: pgp,
   db: db,
@@ -223,4 +295,7 @@ module.exports = {
   getAuthorById: getAuthorById,
   getAuthorsByBookIds: getAuthorsByBookIds,
   getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
+  searchForBooks: searchForBooks,
+  searchForBook: searchForBook,
+  searchForAuthor: searchForAuthor,
 };

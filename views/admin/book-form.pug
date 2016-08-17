@@ -3,7 +3,7 @@ extends ../layout
 block content
   div.container
     h2.page-header Insert new book
-    form(action="/insert", method="post")
+    form(action="/insert-book", method="post")
       div.form-group
         input.form-control(type="text", name="book[title]", placeholder="Book Title")
       div.form-group

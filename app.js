@@ -33,7 +33,7 @@ app.get('/books', function(req, res, next){
       })
     })
     .catch(function(error){
-      throw error;
+      res.json(error);
     })
 });
 
@@ -123,7 +123,7 @@ app.get('/genres/:genre_id', function(req, res){
     })
 })
 
-app.get('/insert-book', (req,res) => {
+app.get('/new-book', (req,res) => {
   database.getAllGenres()
     .then(function(genres){
       res.render('admin/book-form', {
@@ -135,7 +135,7 @@ app.get('/insert-book', (req,res) => {
     })
 });
 
-app.post('/insert', (req,res) =>{
+app.post('/insert-book', (req,res) =>{
   database.createBook(req.body)
     .then(function(bookId){
       console.log(bookId);
@@ -146,6 +146,18 @@ app.post('/insert', (req,res) =>{
       renderError(res, error)
     })
 })
+
+app.get('/search-books', (req,res) => {
+  database.searchForBooks(req.query)
+    .then(function(books){
+      res.render('books/search', {
+        books: books
+      })
+    })
+    .catch(function(error){
+      throw error
+    })
+});
 
 //test routes
 app.get('/test', function(req, res, next){
