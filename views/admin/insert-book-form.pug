@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  div.container
+    h2.page-header Insert new book
+    div.col-md-8
+      form(action="/insert-book", method="post")
+        div.form-group
+          label(for="title") Book Title:
+          input#title.form-control(type="text", name="book[title]")
+        div.form-group
+          label(for="overview") Overview of Book:
+          textarea#overview.form-control(type="text", name="book[description]", rows="4", cols="50")
+        div.form-group
+          label(for="type") Type of Book:
+          select#type.form-control(name="book[fiction]")
+            option(value=true) Fiction
+            option(value=false) Non-Fiction
+        div.form-group
+          label(for="author") Author:
+          input#author.form-control(type="text", name="book[authors][0][name]")
+        div.form-group
+          label(for="author-overview") Overview of Author:
+          textarea#author-overview.form-control(type="text", name="book[authors][0][description]" rows="4", cols="30")
+        div.form-group
+          label(for="genre") Genres:
+          select#genre.form-control(name="book[genres]" multiple)
+            for genre in genres
+              option(value=genre.id)=genre.name
+        div
+          input.btn.btn-success(type="submit", value="Submit a book!" )

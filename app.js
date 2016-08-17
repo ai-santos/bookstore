@@ -126,7 +126,7 @@ app.get('/genres/:genre_id', function(req, res){
 app.get('/new-book', (req,res) => {
   database.getAllGenres()
     .then(function(genres){
-      res.render('admin/book-form', {
+      res.render('admin/insert-book-form', {
         genres: genres
       })
     })
