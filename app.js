@@ -138,8 +138,6 @@ app.get('/new-book', (req,res) => {
 app.post('/insert-book', (req,res) =>{
   database.createBook(req.body)
     .then(function(bookId){
-      console.log(bookId);
-
       res.redirect(`/books/${bookId}`)
     })
     .catch(function(error){

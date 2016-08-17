@@ -212,8 +212,6 @@ const createBook = function(attributes){
 }
 
 const searchForBooks = function(options){
-  console.log(options)
-
   const variables = []
   let sql = `
     SELECT
