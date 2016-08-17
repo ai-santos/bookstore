@@ -259,26 +259,6 @@ const searchForBook = searchTerm => {
   return db.any(sql, [searchTerm])
 }
 
-const searchForAuthor = searchTerm => {
-  const sql = `
-    SELECT
-      DISTINCT(authors.*)
-    FROM
-      authors
-    JOIN
-      book_author
-    ON
-      books.id=book_author.book_id
-    JOIN
-      authors
-    ON
-      book_author.author_id=authors.id
-    WHERE
-      authors.author LIKE '$1%';
-  `
-  return db.any(sql, [searchTerm])
-}
-
 module.exports = {
   pgp: pgp,
   db: db,
@@ -297,5 +277,4 @@ module.exports = {
   getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
   searchForBooks: searchForBooks,
   searchForBook: searchForBook,
-  searchForAuthor: searchForAuthor,
 };
