@@ -2,15 +2,13 @@ extends ../layout
 
 block content
   h1 All Genres
+  for genre in genres
+    .row
+      .col-md-2
+        span= genre.name
+      .col-md-6
+        span= genre.description
+      //- for genre in book.genres
+      //-   .col-md-4
+      //-   a(href="/genres/"+genre.id)= genre.name
 
-  table
-    thead
-      tr
-        th Name
-        th Description
-    tbody
-      for genre in genres
-        td
-          span= genre.name
-        td
-          span= genre.description
