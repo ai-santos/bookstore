@@ -15,7 +15,7 @@ app.set('view engine', 'pug');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -120,6 +120,28 @@ app.get('/genres/:genre_id', function(req, res){
       res.render('genres/show', {
         books: books,
       })
+    })
+})
+
+app.get('/books/new', (req,res) => {
+  database.getAllGenres()
+    .then(function(genres){
+      res.render('admin/book-form', {
+        genres: genres
+      })
+    })
+    .catch(function(error){
+      throw error
+    })
+});
+
+app.post('/insert-book', (req,res) =>{
+  database.createBook(req.body)
+    .then(function(bookId){
+      res.redirect(`/books/${bookId}`)
+    })
+    .catch(function(error){
+      renderError(res, error)
     })
 })
 

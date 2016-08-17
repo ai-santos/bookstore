@@ -61,8 +61,6 @@ const getAuthorsByBookIds = function(bookId){
   return db.many(sql, [bookId]);
 }
 
-
-
 const getAllBooksWithAuthorsAndGenres = function(){
   return getAllBooks().then(function(books){
     const bookIds = books.map(book => book.id)
@@ -128,6 +126,55 @@ const getBooksByAuthorId = function(author_id) {
   return db.any(sql, [author_id]);
 }
 
+const createAuthor = function(attributes){
+  console.log(attributes)
+  const sql = `
+    INSERT INTO
+      author(name, description)
+    VALUES
+      ($1, $2)
+    RETURNING
+      id
+  `
+  return db.one(sql, [attributes.name, attributes.description])
+}
+
+const createBook = function(attributes){
+  console.log(attributes)
+  const sql = `
+    INSERT INTO
+      book (title, description, published_at, fiction)
+    VALUES
+      ($1, $2, $3, $4)
+    RETURNING
+      id
+  `
+  var queries = [
+    db.one(sql, [
+      attributes.title,
+      attributes.description,
+      'now()',
+      attributes.fiction
+    ]) // create the book
+  ]
+  // also create the authors
+  attributes.authors.forEach(author =>
+    queries.push(createAuthor(author))
+  )
+
+  return Promise.all(queries)
+    .then(authorIds => {
+      authorIds = authorIds.map(x => x.id)
+      const bookId = authorIds.shift()
+      return Promise.all([
+        associateAuthorsWithBook(authorIds, bookId),
+        associateGenresWithBook(attributes.genres, bookId),
+      ]).then(function(){
+        return bookId;
+      })
+    })
+}
+
 module.exports = {
   pgp: pgp,
   db: db,
@@ -142,4 +189,6 @@ module.exports = {
   getAllAuthors: getAllAuthors,
   getAuthorById: getAuthorById,
   getAllGenres: getAllGenres,
+  createAuthor:createAuthor,
+  createBook: createBook,
 };
