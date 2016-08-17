@@ -182,10 +182,8 @@ module.exports = {
   getAllBooksWithAuthorsAndGenres: getAllBooksWithAuthorsAndGenres,
   getAllAuthors: getAllAuthors,
   getAllGenres: getAllGenres,
-<<<<<<< HEAD
   createAuthor:createAuthor,
   createBook: createBook,
-=======
   getGenresByBookIds: getGenresByBookIds,
   getBookById: getBookById,
   getBooksByGenreId: getBooksByGenreId,
@@ -193,5 +191,4 @@ module.exports = {
   getAuthorById: getAuthorById,
   getAuthorsByBookIds: getAuthorsByBookIds,
   getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
->>>>>>> 4e55e2c8e6420cbc81092d2993b6a538a773f9aa
 };
