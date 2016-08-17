@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS authors;
 
 CREATE TABLE authors (
   id SERIAL PRIMARY KEY,
+  image_url VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
   description VARCHAR(255) NOT NULL
 );
