@@ -2,21 +2,37 @@ extends ../layout
 
 block content
   h1 All Books
+  for book in books
+    h1 Title
+    .row
+      .col-md-2
+        img.media-object(src= book.image_url, alt='...')
+        a(href="/books/"+book.id)= book.title
+        //- a(href="/authors/"+author.id)= author.name
+      for author in book.authors
+        .col-md-2
+          img.media-object(src= author.image_url, alt='...')
+          a(href="/authors/"+author.id)= author.name
+        .col-md-4
+          p= book.description
+      for genre in book.genres
+        .col-md-4
+          a(href="/genres/"+genre.id)= genre.name
 
-  table
-    thead
-      tr
-        th Title
-        th Authors
-        th Genres
-    tbody
-      for book in books
-        tr
-          td
-            a(href="/books/"+book.id)= book.title
-          td
-            for author in book.authors
-              a(href="/authors/"+author.id)= author.name
-          td
-            for genre in book.genres
-              a(href="/genres/"+genre.id)= genre.name
+  //- table
+  //-   thead
+  //-     tr
+  //-       th Title
+  //-       th Authors
+  //-       th Genres
+  //-   tbody
+  //-     for book in books
+  //-       tr
+  //-         td
+  //-           a(href="/books/"+book.id)= book.title
+  //-         td
+  //-           for author in book.authors
+  //-             a(href="/authors/"+author.id)= author.name
+  //-         td
+  //-           for genre in book.genres
+  //-             a(href="/genres/"+genre.id)= genre.name
