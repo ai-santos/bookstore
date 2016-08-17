@@ -1,9 +1,21 @@
-const connectionString = `postgres://${process.env.USER}@localhost:5432/bookstoredb`
+const databaseName = process.env.NODE_ENV ? 'bookstoredb-test' : 'bookstoredb'
+const connectionString = `postgres://${process.env.USER}@localhost:5432/${databaseName}`
 const pgp = require('pg-promise')();
 
 const db = pgp(connectionString);
 
 // make querys here
+
+const truncateAllTable = function(){
+  return db.none(`
+    TRUNCATE
+      author_books,
+      authors,
+      book_genres,
+      books,
+      genres
+  `)
+}
 
 const getAllBooks = function(){
   return db.any("select * from books");
@@ -177,26 +189,25 @@ const createAuthor = function(attributes){
 const createBook = function(attributes){
   const sql = `
     INSERT INTO
-      books(title, description, published_at, fiction)
+      books (title, description, published_at, fiction, image_url)
     VALUES
-      ($1, $2, $3, $4)
+      ($1, $2, $3, $4, $5)
     RETURNING
       id
   `
   var queries = [
     db.one(sql, [
-      attributes.book.title,
-      attributes.book.description,
+      attributes.title,
+      attributes.description,
       'now()',
-      true
+      attributes.fiction,
+      attributes.image_url
     ])
   ]
   // also create the authors
-  attributes.book.authors.forEach(author =>
+  attributes.authors.forEach(author =>
     queries.push(createAuthor(author))
   )
-
-  console.log('queries', queries);
 
   return Promise.all(queries)
     .then(authorIds => {
@@ -204,11 +215,41 @@ const createBook = function(attributes){
       const bookId = authorIds.shift()
       return Promise.all([
         associateAuthorsWithBook(authorIds, bookId),
-        associateGenresWithBook(attributes.book.genres, bookId),
+        associateGenresWithBook(attributes.genres, bookId),
       ]).then(function(){
         return bookId;
       })
     })
+}
+
+
+const searchByAuthorName = function(options){
+  const variables = []
+  let sql = `
+    SELECT
+      DISTINCT(books.*)
+    FROM
+      books
+    JOIN
+      author_books
+    ON
+      books.id = author_books.book_id
+  `
+  if (options.search_query){
+    let search_query = options.search_query
+      .toLowerCase()
+      .replace(/^ */, '%')
+      .replace(/ *$/, '%')
+      .replace(/ +/g, '%')
+
+    variables.push(search_query)
+    sql += `
+        WHERE
+      LOWER(author_books.author_name) LIKE $${variables.length}
+    `
+  }
+  console.log('----->', sql, variables)
+  return db.any(sql, variables)
 }
 
 const searchForBooks = function(options){
@@ -228,8 +269,28 @@ const searchForBooks = function(options){
 
     variables.push(search_query)
     sql += `
-        WHERE
-      LOWER(books.title) LIKE $${variables.length}
+      JOIN
+        author_books
+      ON
+        books.id = author_books.book_id
+      JOIN
+        authors
+      ON
+        authors.id = author_books.author_id
+      JOIN
+        book_genres
+      ON
+        books.id = book_genres.book_id
+      JOIN
+        genres
+      ON
+        genres.id = book_genres.genre_id
+      WHERE
+        LOWER(books.title) LIKE $${variables.length}
+      OR
+        LOWER(authors.name) LIKE $${variables.length}
+      OR
+        LOWER(genres.name) LIKE $${variables.length}
     `
   }
   console.log('----->', sql, variables)
@@ -260,6 +321,7 @@ const searchForBook = searchTerm => {
 module.exports = {
   pgp: pgp,
   db: db,
+  truncateAllTable: truncateAllTable,
   getAllBooks: getAllBooks,
   getAllBooksWithAuthorsAndGenres: getAllBooksWithAuthorsAndGenres,
   getAllAuthors: getAllAuthors,
@@ -275,4 +337,5 @@ module.exports = {
   getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
   searchForBooks: searchForBooks,
   searchForBook: searchForBook,
+  searchByAuthorName: searchByAuthorName
 };
