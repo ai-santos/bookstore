@@ -126,24 +126,54 @@ const getBooksByAuthorId = function(author_id) {
   return db.any(sql, [author_id]);
 }
 
+const associateAuthorsWithBook = function(authorIds, bookId){
+  authorIds = Array.isArray(authorIds) ? authorIds : [authorIds]
+  let queries = authorIds.map(authorId => {
+    const sql = `
+      INSERT INTO
+        author_books(book_id, author_id)
+      VALUES
+        ($1, $2)
+    `
+    return db.none(sql, [bookId, authorId])
+  })
+  return Promise.all(queries)
+}
+
+const associateGenresWithBook = function(genreIds, bookId){
+  genreIds = Array.isArray(genreIds) ? genreIds : [genreIds]
+
+  console.log('IDs', genreIds, bookId);
+
+  let queries = genreIds.map(genreId => {
+    let sql = `
+      INSERT INTO
+        book_genres(book_id, genre_id)
+      VALUES
+        ($1, $2)
+    `
+    return db.none(sql, [bookId, genreId])
+  })
+  return Promise.all(queries)
+}
+
 const createAuthor = function(attributes){
   console.log(attributes)
   const sql = `
     INSERT INTO
-      author(name, description)
+      authors(image_url, name, description)
     VALUES
-      ($1, $2)
+      ($1, $2, $3)
     RETURNING
       id
   `
-  return db.one(sql, [attributes.name, attributes.description])
+  return db.one(sql, ['', attributes.name, attributes.description])
 }
 
 const createBook = function(attributes){
-  console.log(attributes)
   const sql = `
     INSERT INTO
-      book (title, description, published_at, fiction)
+      books(title, description, published_at, fiction)
     VALUES
       ($1, $2, $3, $4)
     RETURNING
@@ -151,16 +181,18 @@ const createBook = function(attributes){
   `
   var queries = [
     db.one(sql, [
-      attributes.title,
-      attributes.description,
+      attributes.book.title,
+      attributes.book.description,
       'now()',
-      attributes.fiction
-    ]) // create the book
+      true
+    ])
   ]
   // also create the authors
-  attributes.authors.forEach(author =>
+  attributes.book.authors.forEach(author =>
     queries.push(createAuthor(author))
   )
+
+  console.log('queries', queries);
 
   return Promise.all(queries)
     .then(authorIds => {
@@ -168,7 +200,7 @@ const createBook = function(attributes){
       const bookId = authorIds.shift()
       return Promise.all([
         associateAuthorsWithBook(authorIds, bookId),
-        associateGenresWithBook(attributes.genres, bookId),
+        associateGenresWithBook(attributes.book.genres, bookId),
       ]).then(function(){
         return bookId;
       })

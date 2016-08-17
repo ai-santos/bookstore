@@ -123,7 +123,7 @@ app.get('/genres/:genre_id', function(req, res){
     })
 })
 
-app.get('/books/new', (req,res) => {
+app.get('/insert-book', (req,res) => {
   database.getAllGenres()
     .then(function(genres){
       res.render('admin/book-form', {
@@ -135,9 +135,11 @@ app.get('/books/new', (req,res) => {
     })
 });
 
-app.post('/insert-book', (req,res) =>{
+app.post('/insert', (req,res) =>{
   database.createBook(req.body)
     .then(function(bookId){
+      console.log(bookId);
+
       res.redirect(`/books/${bookId}`)
     })
     .catch(function(error){

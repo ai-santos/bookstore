@@ -1,15 +1,15 @@
-extends ../layout.pug
+extends ../layout
 
 block content
   div.container
     h2.page-header Insert new book
-    form(action="/insert-book", method="post")
+    form(action="/insert", method="post")
       div.form-group
         input.form-control(type="text", name="book[title]", placeholder="Book Title")
-      div.form-group cv
+      div.form-group
         input.form-control(type="text", name="book[description]", placeholder="Book Overview")
       div.form-group
-        select.form-control(name="book[fiction]" multiple)
+        select.form-control(name="book[fiction]")
           option(value=true) True
           option(value=false) False
       div.form-group
