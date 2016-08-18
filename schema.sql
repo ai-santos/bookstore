@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS genres;
 
 CREATE TABLE genres (
   id SERIAL PRIMARY KEY,
+  image_url VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
   description TEXT NOT NULL
 );
@@ -45,9 +46,20 @@ CREATE TABLE book_genres (
 
 -- --fixture data
 INSERT INTO
-  genres (name, description)
+  genres (image_url, name, description)
 VALUES
+  ('Biography/autobiography', "narrative of a person/'s life; a true story about a real person"),
+  ('Essay', 'a short literary composition that reflects the author\'s outlook or point.'),
   ('Drama', 'stories composed in verse or prose, usually for theatrical performance, where conflicts and emotion are expressed through dialogue and action'),
+  ('Journalism', 'reporting on news and current events'),
+  ('Laboratory report', 'ra report of an experiment'),
+  ('Journalism', 'reporting on news and current events'),
+  ('Narrative nonfiction/personal narrative', 'factual information about a significant event presented in a format which tells a story'),
+  ('Reference book', 'such as a dictionary, thesaurus, encyclopedia, almanac, or atlas'),
+  ('Self-help book', 'information with the intention of instructing readers on solving personal problems'),
+  ('Speech', 'public address or discourse'),
+  ('Textbook', 'authoritative and detailed factual description of a topic.'),
+  ('Memoir', 'factual story that focuses on a significant relationship between the writer and a person, place, or object; reads like a novel'),
   ('Classic', 'fiction that has become part of an accepted literary canon, widely taught in schools'),
   ('Comic/Graphic novel', 'scripted fiction told visually in artist drawn pictures, usually in panels and speech bubbles'),
   ('Crime/Detective', 'fiction about a committed crime, how the criminal gets caught, and the repercussions of the crime'),
