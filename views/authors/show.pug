@@ -1,14 +1,14 @@
 extends ../layout
 
 block content
-  .row
+  .row.jumbotron
     .col-md-2
       img.media-object(src= author.image_url, alt='...')
     .col-md-10
       a(href="/authors/"+author.id)
         h1= author.name
       p= author.description
-  .row.book-container
+  .row.book-container.jumbotron
     for book in books
       .col-md-2
         img.media-object(src= book.image_url, alt='...')
@@ -16,8 +16,3 @@ block content
         a(href="/books/"+book.id)
           h4= book.title
         p=book.description
-
-
-
-
-
