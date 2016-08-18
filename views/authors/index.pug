@@ -1,11 +1,11 @@
 extends ../layout
 
 block content
-  h1 All Authors
+  h1.page-header Authors
   for author in authors
-    .row
+    .row.jumbotron
       .col-md-2
-        img.media-object(src= author.image_url, alt='...')
+        img.media-object.thumbnail(src= author.image_url, alt='...')
       .col-md-10
         a(href="/authors/"+author.id)
           h3= author.name

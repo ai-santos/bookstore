@@ -17,11 +17,13 @@ html
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav
             li.active
-              a(href='#')
-                | Link
+              a(href='/genres')
+                | Genres
                 span.sr-only (current)
             li
-              a(href='#') Link
+              a(href='/books') Books
+            li
+              a(href='/authors') Authors  
 
           form.navbar-form.navbar-left(action="/search-books", method="get")
             .form-group

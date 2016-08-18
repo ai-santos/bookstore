@@ -93,14 +93,14 @@ app.get('/authors/:authorId', function(req, res){
 
 //get all genres
 app.get('/genres', function(req, res, next){
-  database.getAllBooksWithAuthorsAndGenres()
-    .then(function(books){
+  database.getAllGenresWithBooks()
+    .then(function(genres){
       res.render('genres/index', {
-        books: books,
+        genres: genres,
       })
-    })
-    .catch(function(error){
-      res.json(error);
+      .catch(function(error){
+        throw error;
+      })
     })
 });
 
@@ -109,16 +109,16 @@ app.get('/genres/:genre_id', function(req, res){
   const{ genre_id } = req.params;
 
   database.getBooksByGenreId(genre_id)
-    .catch(function(error){
-      console.error(error);
-      res.render('error',{
-        error: error
-      })
-    })
     .then(function(books){
       console.log('books', books);
       res.render('genres/show', {
         books: books,
+      })
+    })
+    .catch(function(error){
+      console.error(error);
+      res.render('error',{
+        error: error
       })
     })
 })
@@ -162,11 +162,14 @@ app.get('/search-books', (req,res) => {
 
 //test routes
 app.get('/test', function(req, res, next){
-  database.getAllBooksForAllGenres()
+  database.getAllGenresWithBooks()
     .then(function(data){
+      console.log(data);
+
       res.json(data)
     })
     .catch(function(error){
+      log
       res.json({ERROR: error})
     })
 });

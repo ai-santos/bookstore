@@ -1,14 +1,10 @@
 extends ../layout
 
 block content
-  h1 All Genres
+  h1.page-header Genres
   for book in books
-    a(href="/books/"+book.id)
-      h4= book.title
-    .row
-      .col-md-2
-        img.media-object(src= book.image_url, alt='...')
+    .row.jumbotron
       for genre in book.genres
-        .col-md-4
-          a(href="/genres/"+genre.id)= genre.name
+        .col-md-10
+          a(href="/genres/"+genre.id)=genre.name
           p= genre.description
