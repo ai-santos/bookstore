@@ -3,7 +3,7 @@ extends ../layout
 block content
   .row.jumbotron
     .col-md-2
-      img.media-object(src= author.image_url, alt='...')
+      img.media-object.thumbnail(src= author.image_url, alt='...')
     .col-md-10
       a(href="/authors/"+author.id)
         h1= author.name

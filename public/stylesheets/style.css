@@ -1,3 +1,7 @@
 .book-container {
   padding: 20px;
 }
+
+.navbar {
+  border-radius: 0px;
+}

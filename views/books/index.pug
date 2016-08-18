@@ -5,12 +5,12 @@ block content
   for book in books
     .row.jumbotron
       .col-md-2
-        img.media-object(src= book.image_url, alt='...')
+        img.media-object.thumbnail(src= book.image_url, alt='...')
         a(href="/books/"+book.id)= book.title
         //- a(href="/authors/"+author.id)= author.name
       for author in book.authors
         .col-md-2
-          img.media-object(src= author.image_url, alt='...')
+          img.media-object.thumbnail(src= author.image_url, alt='...')
           a(href="/authors/"+author.id)= author.name
         .col-md-4
           p= book.description

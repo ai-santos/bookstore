@@ -1,7 +1,11 @@
 extends ../layout
 
 block content
-  ol
-    for book in books
-      li
-        a(href="/books/"+book.id)= book.title
+    .row
+      for book in books
+        div.jumbotron
+          col-md-2
+            img.media-object.thumbnail(src= book.image_url, alt='...')
+          col-md-10
+            h3
+              a(href="/books/"+book.id)= book.title
