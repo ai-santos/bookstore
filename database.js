@@ -32,6 +32,7 @@ const generateFakeBooks = function(){
             {
               name: faker.name.findName(),
               description: faker.lorem.paragraphs(1),
+              image_url: faker.image.image(100, 100),
             }
           ],
           genres: [
@@ -53,6 +54,16 @@ const pageToOffset = function(page){
 const getAllBooks = function(page){
   const offset = pageToOffset(page)
   return db.any("select * from books LIMIT $1 OFFSET $2", [PAGE_SIZE, offset]);
+}
+
+const getAllAuthors = function(page){
+  const offset = pageToOffset(page)
+  return db.any('select * from authors LIMIT $1 OFFSET $2', [PAGE_SIZE, offset]);
+}
+
+const getAllGenres = function(page){
+  const offset = pageToOffset(page)
+  return db.any('select * from genres LIMIT $1 OFFSET $2', [PAGE_SIZE, offset]);
 }
 
 const getBookById = function(bookId) {
@@ -146,32 +157,8 @@ const getAllBooksForAllGenres = function(){
   })
 }
 
-
-
-
-
-  // return getAllBooks().then(function(books){
-  //   const bookIds = books.map(book => book.id)
-
-  //   return Promise.all([
-  //     getGenresByBookIds(bookIds)
-  //   ]).then(function(data){
-  //     console.log('data', data)
-
-
-  //   })
-  // })
-
-const getAllAuthors = function(){
-  return db.any('select * from authors');
-}
-
 const getAuthorById = function(id){
   return db.one('select authors.* from authors where id=$1', [id]);
-}
-
-const getAllGenres = function(){
-  return db.any('select * from genres');
 }
 
 const getBooksByGenreId = function(genre_id){
@@ -246,7 +233,7 @@ const createAuthor = function(attributes){
     RETURNING
       id
   `
-  return db.one(sql, ['', attributes.name, attributes.description])
+  return db.one(sql, [attributes.image_url, attributes.name, attributes.description])
 }
 
 const createBook = function(attributes){

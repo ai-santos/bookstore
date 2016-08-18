@@ -10,3 +10,7 @@ block content
         a(href="/genres/"+genre.id)
           h3= genre.name
         p= genre.description
+
+  if page > 1
+    a(href="/search-books?page="+(page-1)) Prev
+  a(href="/search-books?page="+(page+1)) Next        

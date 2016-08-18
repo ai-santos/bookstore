@@ -59,7 +59,9 @@ app.get('/books/:book_id', function(req, res, next){
 
 //get all authors
 app.get('/authors', function(req, res, next){
-  database.getAllAuthors()
+  let page = getPage(req)
+
+  database.getAllAuthors(page)
     .then(function(authors){
       res.render('authors/index', {
         authors: authors,
@@ -97,7 +99,9 @@ app.get('/authors/:authorId', function(req, res){
 
 //get all genres
 app.get('/genres', function(req, res, next){
-  database.getAllGenres()
+  let page = getPage(req)
+
+  database.getAllGenres(page)
     .then(function(genres){
       console.log('Genres', genres);
 
