@@ -93,14 +93,14 @@ app.get('/authors/:authorId', function(req, res){
 
 //get all genres
 app.get('/genres', function(req, res, next){
-  database.getAllGenres()
-    .then(function(genres){
+  database.getAllBooksWithAuthorsAndGenres()
+    .then(function(books){
       res.render('genres/index', {
-        genres: genres,
+        books: books,
       })
     })
     .catch(function(error){
-      throw error;
+      res.json(error);
     })
 });
 
@@ -159,7 +159,7 @@ app.get('/search-books', (req,res) => {
 
 //test routes
 app.get('/test', function(req, res, next){
-  database.getAllGenres()
+  database.getAllBooksForAllGenres()
     .then(function(data){
       res.json(data)
     })

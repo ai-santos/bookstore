@@ -96,6 +96,40 @@ const getAllBooksWithAuthorsAndGenres = function(){
   })
 }
 
+const getAllBooksForAllGenres = function(){
+  return getAllBooks().then(function(books){
+    const bookIds = books.map(book => book.id)
+
+    return getGenresByBookIds(bookIds).then(function(data){
+      console.log('data', data)
+
+      books.forEach(function(book){
+        book.authors = authors.filter(author => author.book_id === book.id)
+        book.genres = genres.filter(genre => genre.book_id === book.id)
+      })
+
+      console.log('Books 2nd', books)
+      return books
+    })
+  })
+}
+
+
+
+
+
+  // return getAllBooks().then(function(books){
+  //   const bookIds = books.map(book => book.id)
+
+  //   return Promise.all([
+  //     getGenresByBookIds(bookIds)
+  //   ]).then(function(data){
+  //     console.log('data', data)
+
+
+  //   })
+  // })
+
 const getAllAuthors = function(){
   return db.any('select * from authors');
 }
@@ -326,6 +360,7 @@ module.exports = {
   getAllBooksWithAuthorsAndGenres: getAllBooksWithAuthorsAndGenres,
   getAllAuthors: getAllAuthors,
   getAllGenres: getAllGenres,
+  getAllBooksForAllGenres: getAllBooksForAllGenres,
   createAuthor:createAuthor,
   createBook: createBook,
   getGenresByBookIds: getGenresByBookIds,

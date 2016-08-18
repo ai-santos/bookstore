@@ -18,6 +18,7 @@ block content
       for genre in book.genres
         .col-md-4
           a(href="/genres/"+genre.id)= genre.name
+          p= genre.description
 
   //- table
   //-   thead
