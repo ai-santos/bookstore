@@ -1,15 +1,10 @@
 extends ../layout
 
 block content
-  div
-    table
-      thead All books currently available
-        tr
-          th ID
-          th Title
-      tbody
-        for book in books
-          tr
-            td= book.id
-            td
-              a(href="/books/"+book.id)= book.title
+  for book in books
+    h3=book.title
+    .row.jumbotron
+      .col-md-4
+        img.media-object.thumbnail(src= book.image_url, alt='...')
+      .col-md-8
+        p= book.description
