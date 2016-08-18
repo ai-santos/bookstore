@@ -8,3 +8,7 @@ block content
         img.media-object.thumbnail(src= book.image_url, alt='...')
       .col-md-8
         p= book.description
+
+  if page > 1
+    a(href="/search-books?page="+(page-1)) Prev
+  a(href="/search-books?page="+(page+1)) Next

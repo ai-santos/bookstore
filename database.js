@@ -45,8 +45,14 @@ const generateFakeBooks = function(){
     })
 }
 
-const getAllBooks = function(){
-  return db.any("select * from books");
+const PAGE_SIZE=10
+const pageToOffset = function(page){
+  page = page || 1
+  return (page-1)*PAGE_SIZE;
+}
+const getAllBooks = function(page){
+  const offset = pageToOffset(page)
+  return db.any("select * from books LIMIT $1 OFFSET $2", [PAGE_SIZE, offset]);
 }
 
 const getBookById = function(bookId) {
@@ -101,8 +107,8 @@ const getAuthorsByBookIds = function(bookId){
   return db.many(sql, [bookId]);
 }
 
-const getAllBooksWithAuthorsAndGenres = function(){
-  return getAllBooks().then(function(books){
+const getAllBooksWithAuthorsAndGenres = function(page){
+  return getAllBooks(page).then(function(books){
     const bookIds = books.map(book => book.id)
 
     return Promise.all([
@@ -320,6 +326,16 @@ const searchForBooks = function(options){
         LOWER(genres.name) LIKE $${variables.length}
     `
   }
+
+  if (options.page){
+    variables.push(PAGE_SIZE)
+    variables.push(pageToOffset(options.page))
+    sql += `
+      LIMIT $${variables.length-1}
+      OFFSET $${variables.length}
+    `
+  }
+  console.log('SEARCH QUERY', sql, variables)
   return db.any(sql, variables)
 }
 

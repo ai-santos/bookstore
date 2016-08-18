@@ -16,3 +16,9 @@ block content
             a(href="/genres/"+genre.id)=genre.name
       .col-md-10
         blockquote=book.description
+
+
+  if page > 1
+    a(href="/?page="+(page-1)) Prev
+  a(href="/?page="+(page+1)) Next
+

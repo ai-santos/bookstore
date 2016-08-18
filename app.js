@@ -19,11 +19,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+const getPage = function(req){
+  let page = parseInt(req.query.page, 10)
+  if (isNaN(page) || page < 1) page = 1;
+  return page;
+}
+
 //get all books
 app.get('/', function(req, res, next){
-  database.getAllBooksWithAuthorsAndGenres()
+  let page = getPage(req)
+  database.getAllBooksWithAuthorsAndGenres(page)
     .then(function(books){
       res.render('books/index', {
+        page: page,
         books: books,
       })
     })
@@ -143,12 +152,20 @@ app.post('/insert-book', (req,res) =>{
 })
 
 app.get('/search-books', (req,res) => {
-  database.searchForBooks(req.query)
+  let page = getPage(req)
+
+  const searchOptions = {
+    search_query: req.query.search_query,
+    page: page,
+  }
+
+  database.searchForBooks(searchOptions)
     .then(function(books){
       books[0].authors = []
       books[0].genres = []
 
       res.render('books/search', {
+        page: page,
         books: books,
       })
     })
