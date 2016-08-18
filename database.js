@@ -1,8 +1,8 @@
 const databaseName = process.env.NODE_ENV ? 'bookstoredb-test' : 'bookstoredb'
 const connectionString = `postgres://${process.env.USER}@localhost:5432/${databaseName}`
 const pgp = require('pg-promise')();
-
 const db = pgp(connectionString);
+const faker = require('faker');
 
 // make querys here
 
@@ -17,8 +17,42 @@ const truncateAllTable = function(){
   `)
 }
 
-const getAllBooks = function(){
-  return db.any("select * from books");
+const generateFakeBooks = function(){
+  return getAllGenres()
+    .then(genres => {
+      var queries = [];
+      for(let i = 30; i >= 0; i--){
+        queries.push(createBook({
+          title: faker.name.title(),
+          description: faker.lorem.paragraphs(2),
+          published_at: faker.date.past(),
+          fiction: faker.random.boolean(),
+          image_url: faker.image.image(100, 100),
+          authors: [
+            {
+              name: faker.name.findName(),
+              description: faker.lorem.paragraphs(1),
+            }
+          ],
+          genres: [
+            faker.random.arrayElement(genres).id,
+            faker.random.arrayElement(genres).id,
+            faker.random.arrayElement(genres).id
+          ]
+        }))
+      }
+      return Promise.all(queries)
+    })
+}
+
+const PAGE_SIZE=10
+const pageToOffset = function(page){
+  page = page || 1
+  return (page-1)*PAGE_SIZE;
+}
+const getAllBooks = function(page){
+  const offset = pageToOffset(page)
+  return db.any("select * from books LIMIT $1 OFFSET $2", [PAGE_SIZE, offset]);
 }
 
 const getBookById = function(bookId) {
@@ -73,8 +107,8 @@ const getAuthorsByBookIds = function(bookId){
   return db.many(sql, [bookId]);
 }
 
-const getAllBooksWithAuthorsAndGenres = function(){
-  return getAllBooks().then(function(books){
+const getAllBooksWithAuthorsAndGenres = function(page){
+  return getAllBooks(page).then(function(books){
     const bookIds = books.map(book => book.id)
 
     return Promise.all([
@@ -292,6 +326,16 @@ const searchForBooks = function(options){
         LOWER(genres.name) LIKE $${variables.length}
     `
   }
+
+  if (options.page){
+    variables.push(PAGE_SIZE)
+    variables.push(pageToOffset(options.page))
+    sql += `
+      LIMIT $${variables.length-1}
+      OFFSET $${variables.length}
+    `
+  }
+  console.log('SEARCH QUERY', sql, variables)
   return db.any(sql, variables)
 }
 
@@ -314,4 +358,5 @@ module.exports = {
   getAuthorsByBookIds: getAuthorsByBookIds,
   getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
   searchForBooks: searchForBooks,
+  generateFakeBooks: generateFakeBooks,
 };
