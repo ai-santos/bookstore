@@ -2,9 +2,9 @@ extends ../layout
 
 block content
   h1.page-header Genres
-  for book in books
+  for genre in genres
     .row.jumbotron
-      for genre in book.genres
-        .col-md-10
-          a(href="/genres/"+genre.id)=genre.name
-          p= genre.description
+      .col-md-2
+        a(href="/genres/"+genre.id)=genre.name
+      .col-md-10
+        p= genre.description

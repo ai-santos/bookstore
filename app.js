@@ -93,8 +93,10 @@ app.get('/authors/:authorId', function(req, res){
 
 //get all genres
 app.get('/genres', function(req, res, next){
-  database.getAllGenresWithBooks()
+  database.getAllGenres()
     .then(function(genres){
+      console.log('Genres', genres);
+      
       res.render('genres/index', {
         genres: genres,
       })
@@ -114,11 +116,11 @@ app.get('/genres/:genre_id', function(req, res){
       res.render('genres/show', {
         books: books,
       })
-    })
-    .catch(function(error){
-      console.error(error);
-      res.render('error',{
-        error: error
+      .catch(function(error){
+        console.error(error);
+        res.render('error',{
+          error: error
+        })
       })
     })
 })
