@@ -1,8 +1,8 @@
 const databaseName = process.env.NODE_ENV ? 'bookstoredb-test' : 'bookstoredb'
 const connectionString = `postgres://${process.env.USER}@localhost:5432/${databaseName}`
 const pgp = require('pg-promise')();
-
 const db = pgp(connectionString);
+const faker = require('faker');
 
 // make querys here
 
@@ -15,6 +15,34 @@ const truncateAllTable = function(){
       books,
       genres
   `)
+}
+
+const generateFakeBooks = function(){
+  return getAllGenres()
+    .then(genres => {
+      var queries = [];
+      for(let i = 30; i >= 0; i--){
+        queries.push(createBook({
+          title: faker.name.title(),
+          description: faker.lorem.paragraphs(2),
+          published_at: faker.date.past(),
+          fiction: faker.random.boolean(),
+          image_url: faker.image.image(100, 100),
+          authors: [
+            {
+              name: faker.name.findName(),
+              description: faker.lorem.paragraphs(1),
+            }
+          ],
+          genres: [
+            faker.random.arrayElement(genres).id,
+            faker.random.arrayElement(genres).id,
+            faker.random.arrayElement(genres).id
+          ]
+        }))
+      }
+      return Promise.all(queries)
+    })
 }
 
 const getAllBooks = function(){
@@ -314,4 +342,5 @@ module.exports = {
   getAuthorsByBookIds: getAuthorsByBookIds,
   getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
   searchForBooks: searchForBooks,
+  generateFakeBooks: generateFakeBooks,
 };
