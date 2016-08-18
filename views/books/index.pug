@@ -3,7 +3,6 @@ extends ../layout
 block content
   h1 All Books
   for book in books
-    h1 Title
     .row
       .col-md-2
         img.media-object(src= book.image_url, alt='...')
