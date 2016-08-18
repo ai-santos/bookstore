@@ -19,13 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// index route
-app.get('/', function(req, res, next){
-  res.render('index', {})
-});
-
 //get all books
-app.get('/books', function(req, res, next){
+app.get('/', function(req, res, next){
   database.getAllBooksWithAuthorsAndGenres()
     .then(function(books){
       res.render('books/index', {
@@ -96,7 +91,7 @@ app.get('/genres', function(req, res, next){
   database.getAllGenres()
     .then(function(genres){
       console.log('Genres', genres);
-      
+
       res.render('genres/index', {
         genres: genres,
       })

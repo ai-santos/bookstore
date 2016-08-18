@@ -13,17 +13,17 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='#') Brand
+          a.navbar-brand(href='/') Aileen's
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav
+            li
+              a(href='/') Books
             li.active
               a(href='/genres')
                 | Genres
                 span.sr-only (current)
             li
-              a(href='/books') Books
-            li
-              a(href='/authors') Authors  
+              a(href='/authors') Authors
 
           form.navbar-form.navbar-left(action="/search-books", method="get")
             .form-group
