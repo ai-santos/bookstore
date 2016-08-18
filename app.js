@@ -148,8 +148,11 @@ app.post('/insert-book', (req,res) =>{
 app.get('/search-books', (req,res) => {
   database.searchForBooks(req.query)
     .then(function(books){
+      books[0].authors = []
+      books[0].genres = []
+
       res.render('books/search', {
-        books: books
+        books: books,
       })
     })
     .catch(function(error){

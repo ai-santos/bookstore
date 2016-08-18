@@ -89,8 +89,6 @@ const getAllBooksWithAuthorsAndGenres = function(){
         book.authors = authors.filter(author => author.book_id === book.id)
         book.genres = genres.filter(genre => genre.book_id === book.id)
       })
-
-      console.log('Books 2nd', books)
       return books
     })
   })
@@ -121,7 +119,6 @@ const getBooksByGenreId = function(genre_id){
     WHERE
       book_genres.genre_id=$1
   `;
-  console.log(sql)
   return db.any(sql, [genre_id]);
 }
 
@@ -138,7 +135,6 @@ const getBooksByAuthorId = function(author_id) {
     WHERE
       author_books.author_id=$1
   `;
-  console.log(sql)
   return db.any(sql, [author_id]);
 }
 
@@ -174,7 +170,6 @@ const associateGenresWithBook = function(genreIds, bookId){
 }
 
 const createAuthor = function(attributes){
-  console.log(attributes)
   const sql = `
     INSERT INTO
       authors(image_url, name, description)
@@ -222,36 +217,6 @@ const createBook = function(attributes){
     })
 }
 
-
-const searchByAuthorName = function(options){
-  const variables = []
-  let sql = `
-    SELECT
-      DISTINCT(books.*)
-    FROM
-      books
-    JOIN
-      author_books
-    ON
-      books.id = author_books.book_id
-  `
-  if (options.search_query){
-    let search_query = options.search_query
-      .toLowerCase()
-      .replace(/^ */, '%')
-      .replace(/ *$/, '%')
-      .replace(/ +/g, '%')
-
-    variables.push(search_query)
-    sql += `
-        WHERE
-      LOWER(author_books.author_name) LIKE $${variables.length}
-    `
-  }
-  console.log('----->', sql, variables)
-  return db.any(sql, variables)
-}
-
 const searchForBooks = function(options){
   const variables = []
   let sql = `
@@ -293,29 +258,7 @@ const searchForBooks = function(options){
         LOWER(genres.name) LIKE $${variables.length}
     `
   }
-  console.log('----->', sql, variables)
   return db.any(sql, variables)
-}
-
-
-const searchForBook = searchTerm => {
-  const sql = `
-    SELECT
-      DISTINCT(books.*)
-    FROM
-      books
-    JOIN
-      book_author
-    ON
-      authors.id=book_author.author_id
-    JOIN
-      books
-    ON
-      book_author.book_id=books.id
-    WHERE
-      authors.author LIKE '$1%';
-  `
-  return db.any(sql, [searchTerm])
 }
 
 module.exports = {
@@ -336,6 +279,4 @@ module.exports = {
   getAuthorsByBookIds: getAuthorsByBookIds,
   getBookWithGenresAndAuthorsById: getBookWithGenresAndAuthorsById,
   searchForBooks: searchForBooks,
-  searchForBook: searchForBook,
-  searchByAuthorName: searchByAuthorName
 };
