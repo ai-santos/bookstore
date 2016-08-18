@@ -1,19 +1,21 @@
 extends ../layout
 
 block content
-  h1= book.title
-  .col-md-2
-    img.media-object(src= book.image_url, alt='...')
-  .col-md-4
-    h3 Authors
-    ul
-      for author in book.authors
-        li
-          a(href="/authors/"+author.id)= author.name
-    h3 Genres
-    ul
-      for genre in book.genres
-        li
-          a(href="/genres/"+genre.id)= genre.name
-  .col-md-6
-    p= book.description
+  a(href="https://www.amazon.com/Wealth-Nations-Adam-Smith/dp/1604598913")
+    h1= book.title
+  .row.jumbotron
+    .col-md-2
+      img.media-object(src= book.image_url, alt='...')
+    .col-md-2
+      h3 Authors
+      ul
+        for author in book.authors
+          li
+            a(href="/authors/"+author.id)= author.name
+      h3 Genres
+      ul
+        for genre in book.genres
+          li
+            a(href="/genres/"+genre.id)= genre.name
+    .col-md-8
+      p= book.description
