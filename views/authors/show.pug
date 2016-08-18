@@ -8,8 +8,8 @@ block content
       a(href="/authors/"+author.id)
         h1= author.name
       p= author.description
-  .row.book-container.jumbotron
-    for book in books
+  for book in books
+    .row.jumbotron
       .col-md-2
         img.media-object(src= book.image_url, alt='...')
       .col-md-10
