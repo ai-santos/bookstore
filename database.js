@@ -322,7 +322,7 @@ const searchForBooks = function(options){
       OFFSET $${variables.length}
     `
   }
-  console.log('SEARCH QUERY', sql, variables)
+  console.log('SEARCH QUERY',  sql, variables)
   return db.any(sql, variables)
 }
 
