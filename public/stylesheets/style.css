@@ -5,3 +5,15 @@
 .navbar {
   border-radius: 0px;
 }
+
+
+.banner-image {
+  padding-top: 0;
+  background-image: url('/images/dna-banner3.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 350px;
+}
