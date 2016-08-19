@@ -11,13 +11,14 @@ block content
         for author in book.authors
           div By:
             a(href="/authors/"+author.id)=author.name
-        for genre in book.genres
-          div Genre:
+        div Genres:
+          for genre in book.genres
             a(href="/genres/"+genre.id)=genre.name
+            br 
       .col-md-10
         blockquote=book.description
 
 
   if page > 1
-    a(href="/?page="+(page-1)) Prev
-  a(href="/?page="+(page+1)) Next
+    a.btn.btn-info.pull-left(href="/?page="+(page-1)) Prev
+  a.btn.btn-info.pull-right(href="/?page="+(page+1)) Next
