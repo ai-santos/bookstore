@@ -9,3 +9,22 @@ body {
 .navbar {
   border-radius: 0px;
 }
+
+.container .jumbotron, .container-fluid .jumbotron {
+  border-radius: 0px;
+}
+
+.jumbotron {
+    background-color: #c9e2e3;
+}
+
+
+.banner-image {
+  background-image: url('/images/dna-banner3.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 180px;
+}
