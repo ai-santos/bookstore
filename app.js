@@ -10,7 +10,6 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -85,7 +84,6 @@ app.get('/authors/:authorId', function(req, res){
     .then(function(data){
       const author = data[0]
       const books = data[1]
-      console.log('books', books)
       // res.json(authors);
       res.render('authors/show', {
         books: books,
@@ -104,8 +102,6 @@ app.get('/genres', function(req, res, next){
 
   database.getAllGenres(page)
     .then(function(genres){
-      console.log('Genres', genres);
-
       res.render('genres/index', {
         page: page,
         genres: genres,
@@ -122,12 +118,10 @@ app.get('/genres/:genre_id', function(req, res){
 
   database.getBooksByGenreId(genre_id)
     .then(function(books){
-      console.log('books', books);
       res.render('genres/show', {
         books: books,
       })
       .catch(function(error){
-        console.error(error);
         res.render('error',{
           error: error
         })
@@ -159,7 +153,6 @@ app.post('/insert-book', (req,res) =>{
 
 app.get('/search-books', (req,res) => {
   let page = getPage(req)
-
   const searchOptions = {
     search_query: req.query.search_query,
     page: page,
@@ -184,12 +177,9 @@ app.get('/search-books', (req,res) => {
 app.get('/test', function(req, res, next){
   database.getAllGenresWithBooks()
     .then(function(data){
-      console.log(data);
-
       res.json(data)
     })
     .catch(function(error){
-      log
       res.json({ERROR: error})
     })
 });

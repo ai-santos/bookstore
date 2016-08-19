@@ -5,7 +5,6 @@ const db = pgp(connectionString);
 const faker = require('faker');
 
 // make querys here
-
 const truncateAllTable = function(){
   return db.none(`
     TRUNCATE
@@ -126,8 +125,6 @@ const getAllBooksWithAuthorsAndGenres = function(page){
       getGenresByBookIds(bookIds),
       getAuthorsByBookIds(bookIds),
     ]).then(function(data){
-      console.log('data', data)
-
       const genres = data[0]
       const authors = data[1]
       books.forEach(function(book){
@@ -144,14 +141,10 @@ const getAllBooksForAllGenres = function(){
     const bookIds = books.map(book => book.id)
 
     return getGenresByBookIds(bookIds).then(function(data){
-      console.log('data', data)
-
       books.forEach(function(book){
         book.authors = authors.filter(author => author.book_id === book.id)
         book.genres = genres.filter(genre => genre.book_id === book.id)
       })
-
-      console.log('Books 2nd', books)
       return books
     })
   })
@@ -209,9 +202,6 @@ const associateAuthorsWithBook = function(authorIds, bookId){
 
 const associateGenresWithBook = function(genreIds, bookId){
   genreIds = Array.isArray(genreIds) ? genreIds : [genreIds]
-
-  console.log('IDs', genreIds, bookId);
-
   let queries = genreIds.map(genreId => {
     let sql = `
       INSERT INTO
@@ -322,7 +312,6 @@ const searchForBooks = function(options){
       OFFSET $${variables.length}
     `
   }
-  console.log('SEARCH QUERY',  sql, variables)
   return db.any(sql, variables)
 }
 
