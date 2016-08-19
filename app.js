@@ -64,6 +64,7 @@ app.get('/authors', function(req, res, next){
   database.getAllAuthors(page)
     .then(function(authors){
       res.render('authors/index', {
+        page: page,
         authors: authors,
       })
     })
@@ -106,6 +107,7 @@ app.get('/genres', function(req, res, next){
       console.log('Genres', genres);
 
       res.render('genres/index', {
+        page: page,
         genres: genres,
       })
       .catch(function(error){
