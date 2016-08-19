@@ -12,5 +12,5 @@ block content
         p= genre.description
 
   if page > 1
-    a(href="/genres?page="+(page-1)) Prev
-  a(href="/genres?page="+(page+1)) Next        
+    a.btn.btn-info.pull-left(href="/genres?page="+(page-1)) Prev
+  a.btn.btn-info.pull-right(href="/genres?page="+(page+1)) Next        

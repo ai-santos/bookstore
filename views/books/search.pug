@@ -10,5 +10,5 @@ block content
         p= book.description
 
   if page > 1
-    a(href="/search-books?page="+(page-1)) Prev
-  a(href="/search-books?page="+(page+1)) Next
+    a.btn.btn-info.pull-left(href="/search-books?page="+(page-1)) Prev
+  a.btn.btn-info.pull-right(href="/search-books?page="+(page+1)) Next
