@@ -1,5 +1,6 @@
 body {
   padding-bottom: 75px;
+  font-family: 'Abel', sans-serif;
 }
 
 .book-container {
@@ -10,6 +11,27 @@ body {
   border-radius: 0px;
 }
 
+.navbar-nav>li>a {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  line-height: 20px;
+  font-size: 1.3em;
+  font-family: 'Denk One', sans-serif;
+}
+
+.navbar-default .navbar-brand {
+  color: #b8ba5c;
+}
+
+.navbar-brand {
+  float: left;
+  height: 50px;
+  padding: 10px 10px;
+  font-size: 24px;
+  font-family: 'Permanent Marker', cursive;
+  line-height: 20px;
+}
+
 .container .jumbotron, .container-fluid .jumbotron {
   border-radius: 0px;
 }
@@ -17,6 +39,7 @@ body {
 .jumbotron {
     background-color: #c9e2e3;
 }
+
 
 
 .banner-image {
