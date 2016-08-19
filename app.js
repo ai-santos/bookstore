@@ -25,6 +25,10 @@ const getPage = function(req){
   return page;
 }
 
+app.get('/about', function(req, res){
+  res.render('about')
+});
+
 //get all books
 app.get('/', function(req, res, next){
   let page = getPage(req)

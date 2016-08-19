@@ -1,3 +1,7 @@
+body {
+  padding-bottom: 75px;
+}
+
 .book-container {
   padding: 20px;
 }
